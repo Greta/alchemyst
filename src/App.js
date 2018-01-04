@@ -5,7 +5,7 @@ const _ = require('lodash');
 const grid = {
   rows: 8,
   cols: 7,
-  squares: ['pink', 'blue', 'green', 'purple']
+  colors: ['pink', 'blue', 'green', 'purple']
 }
 
 class App extends Component {
@@ -28,31 +28,80 @@ class Grid extends Component {
     this.state = {
       matrix: this.buildGrid()
     }
+
+    this.fire = this.fire.bind(this)
+    this.atLeastThree = this.atLeastThree.bind(this)
   }
-  buildGrid = (matrix = []) => {
-    if (!matrix.length) {
-      _.map([...Array(grid.cols).keys()], (row) => {
-        matrix[row] = []
-        _.map([...Array(grid.cols).keys()], (col) => {
-          matrix[row][col] = Math.floor(Math.random() * grid.squares.length) + 1
-        })
+  // Builds a random matrix based on the set grid options (size and colors)
+  // Can return an empty matrix, used for tracking clicked groups
+  buildGrid = (empty = 0) => {
+    let matrix = []
+    _.map([...Array(grid.rows).keys()], (row) => {
+      matrix[row] = []
+      _.map([...Array(grid.cols).keys()], (col) => {
+        matrix[row][col] = empty ? 0 : Math.floor(Math.random() * grid.colors.length) + 1
       })
-    }
+    })
     return matrix
   }
-  pop = square => {
-    console.log(square)
+  fire = square => {
+    const props = {...square.props}
+
+    if (this.atLeastThree(props)) {
+      this.pop(props)
+    } else {
+      this.feedback(props)
+    }
+  }
+  atLeastThree = props => {
+    const matrix = this.state.matrix,
+      x = props.x,
+      y = props.y
+
+    let count = 1,
+      group = this.buildGrid(1)
+
+    group[y][x] = 1
+
+    // Check the square above
+    if (y && matrix[y-1][x] === props.color  && !group[y-1][x]) {
+      group[y-1][x] = 1
+      count++
+    }
+    // Check the square below
+    if (y < grid.rows - 1 && matrix[y+1][x] === props.color && !group[y+1][x]) {
+      group[y+1][x] = 1
+      count++
+    }
+    // Check the square to the left
+    if (x && matrix[y][x-1] === props.color && !group[y][x-1]) {
+      group[y][x-1] = 1
+      count++
+    }
+    // Check the square to the right
+    if (x < grid.cols - 1 && matrix[y][x+1] === props.color && !group[y][x+1]) {
+      group[y][x+1] = 1
+      count++
+    }
+    console.log(group)
+    return count > 2
+  }
+  pop = () => {
+    console.log('start popping squares')
+  }
+  feedback = () => {
+    console.log('not enough squares')
   }
   render() {
-    const rows = _.map(this.state.matrix, (row, rowIndex) => {
-      const cols = _.map(row, (sq, sqIndex) => {
-        let props = { rowIndex, sqIndex, sq }
+    const rows = _.map(this.state.matrix, (row, y) => {
+      const cols = _.map(row, (color, x) => {
+        let props = {y, x, color}
         return (
-          <Square {...props} onClick={this.pop} key={'sq_' + rowIndex + '_' + sqIndex} />
+          <Square {...props} onClick={this.fire} key={'sq_' + y + '_' + x} />
         )
       })
       return (
-        <tr key={'row_' + rowIndex}>{cols}</tr>
+        <tr key={'row_' + y}>{cols}</tr>
       )
     })
     return (
@@ -63,7 +112,7 @@ class Grid extends Component {
 
 class Square extends Component {
   render() {
-    const color = grid.squares[this.props.sq - 1]
+    const color = grid.colors[this.props.color - 1]
     return (
       <td onClick={() => {this.props.onClick(this)}}>
         <span className={color}></span>
