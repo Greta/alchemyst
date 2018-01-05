@@ -46,45 +46,53 @@ class Grid extends Component {
   }
   fire = square => {
     const props = {...square.props}
-
-    if (this.atLeastThree(props)) {
-      this.pop(props)
-    } else {
-      this.feedback(props)
-    }
+    this.atLeastThree(props)
   }
   atLeastThree = props => {
-    const matrix = this.state.matrix,
-      x = props.x,
+    const x = props.x,
       y = props.y
+    let group = this.buildGrid(1)
 
-    let count = 1,
-      group = this.buildGrid(1)
+    group = this.checkSquare(group, x, y);
+    while (this.hasUnchecked(group)) {
+      _.each(group, (row, y) => {
+        _.each(row, (sq, x) => {
+          if (sq === 2) {
+            group = this.checkSquare(group, x, y)
+          }
+        })
+      })
+    }
 
-    group[y][x] = 1
-
-    // Check the square above
-    if (y && matrix[y-1][x] === props.color  && !group[y-1][x]) {
-      group[y-1][x] = 1
-      count++
-    }
-    // Check the square below
-    if (y < grid.rows - 1 && matrix[y+1][x] === props.color && !group[y+1][x]) {
-      group[y+1][x] = 1
-      count++
-    }
-    // Check the square to the left
-    if (x && matrix[y][x-1] === props.color && !group[y][x-1]) {
-      group[y][x-1] = 1
-      count++
-    }
-    // Check the square to the right
-    if (x < grid.cols - 1 && matrix[y][x+1] === props.color && !group[y][x+1]) {
-      group[y][x+1] = 1
-      count++
-    }
     console.log(group)
     return count > 2
+  }
+  checkSquare = (group, x, y) => {
+    // All checked squares are given the number 1 and adjacent matches
+    // are given the number 2 so they can be checked later
+    const matrix = this.state.matrix,
+      color = matrix[y][x]
+    // Check the square above
+    if (y && matrix[y-1][x] === color  && !group[y-1][x]) {
+      group[y-1][x] = 2
+    }
+    // Check the square below
+    if (y < grid.rows - 1 && matrix[y+1][x] === color && !group[y+1][x]) {
+      group[y+1][x] = 2
+    }
+    // Check the square to the left
+    if (x && matrix[y][x-1] === color && !group[y][x-1]) {
+      group[y][x-1] = 2
+    }
+    // Check the square to the right
+    if (x < grid.cols - 1 && matrix[y][x+1] === color && !group[y][x+1]) {
+      group[y][x+1] = 2
+    }
+    group[y][x] = 1
+    return group
+  }
+  hasUnchecked = group => {
+    return _.flatten(group).includes(2)
   }
   pop = () => {
     console.log('start popping squares')
