@@ -30,7 +30,7 @@ class Grid extends Component {
     }
 
     this.fire = this.fire.bind(this)
-    this.atLeastThree = this.atLeastThree.bind(this)
+    this.findGroup = this.findGroup.bind(this)
   }
   // Builds a random matrix based on the set grid options (size and colors)
   // Can return an empty matrix, used for tracking clicked groups
@@ -44,28 +44,39 @@ class Grid extends Component {
     })
     return matrix
   }
-  fire = square => {
-    const props = {...square.props}
-    this.atLeastThree(props)
+  fire = props => {
+    const group = this.findGroup(props)
+
+    // Count group squares.  If 3 or greater, pop the group
+    // Otherwise, send feedback
+    const count = _.flatten(group).reduce((a, b) => a + b, 0)
+    if (count >= 3) {
+      this.pop(group)
+    } else {
+      this.feedback(group)
+    }
   }
-  atLeastThree = props => {
+  findGroup = props => {
     const x = props.x,
       y = props.y
     let group = this.buildGrid(1)
 
     group = this.checkSquare(group, x, y);
     while (this.hasUnchecked(group)) {
-      _.each(group, (row, y) => {
-        _.each(row, (sq, x) => {
-          if (sq === 2) {
-            group = this.checkSquare(group, x, y)
-          }
-        })
-      })
+      group = this.checkGroup(group)
     }
 
-    console.log(group)
-    return count > 2
+    return group
+  }
+  checkGroup = group => {
+    _.each(group, (row, y) => {
+      _.each(row, (sq, x) => {
+        if (sq === 2) {
+          group = this.checkSquare(group, x, y)
+        }
+      })
+    })
+    return group
   }
   checkSquare = (group, x, y) => {
     // All checked squares are given the number 1 and adjacent matches
@@ -122,7 +133,7 @@ class Square extends Component {
   render() {
     const color = grid.colors[this.props.color - 1]
     return (
-      <td onClick={() => {this.props.onClick(this)}}>
+      <td onClick={() => {this.props.onClick(this.props)}}>
         <span className={color}></span>
       </td>
     )
