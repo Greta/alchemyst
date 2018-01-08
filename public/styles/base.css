@@ -44,3 +44,16 @@ body {
       background: #59D37A; }
     #garden td span.yellow {
       background: #F2D208; }
+
+@keyframes feedback {
+  from, to {
+    transform: translate3d(0, 0, 0); }
+  10%, 50%, 90% {
+    transform: translate3d(-2px, 0, 0); }
+  30%, 70% {
+    transform: translate3d(2px, 0, 0); } }
+
+.feedback {
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+  animation-name: feedback; }
