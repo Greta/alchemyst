@@ -42,17 +42,21 @@ $grid-colors: (
 );
 
 #garden {
+  line-height: 0;
   margin: 10px auto;
   td {
-    span {
-      display: block;
-      height: 25px;
-      width: 25px;
+    div {
+      width: 30px;
       @each $color, $hex in $grid-colors {
-        &.#{$color} {
+        &.#{$color} span {
           background: $hex;
         }
       }
+    }
+    span {
+      display: inline-block;
+      height: 15px;
+      width: 15px;
     }
   }
 }

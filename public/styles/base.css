@@ -29,21 +29,24 @@ body {
     transform: rotate(360deg); } }
 
 #garden {
+  line-height: 0;
   margin: 10px auto; }
-  #garden td span {
-    display: block;
-    height: 25px;
-    width: 25px; }
-    #garden td span.pink {
+  #garden td div {
+    width: 30px; }
+    #garden td div.pink span {
       background: #E50666; }
-    #garden td span.purple {
+    #garden td div.purple span {
       background: #A100CD; }
-    #garden td span.blue {
+    #garden td div.blue span {
       background: #04B4B7; }
-    #garden td span.green {
+    #garden td div.green span {
       background: #59D37A; }
-    #garden td span.yellow {
+    #garden td div.yellow span {
       background: #F2D208; }
+  #garden td span {
+    display: inline-block;
+    height: 15px;
+    width: 15px; }
 
 @keyframes feedback {
   from, to {

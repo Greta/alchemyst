@@ -154,14 +154,19 @@ class Square extends Component {
   render() {
     const color = grid.colors[this.props.color - 1]
     let props = {
-        onClick: () => {this.props.onClick(this.props)}
-      }
+      onClick: () => {this.props.onClick(this.props)}
+    }
     if (this.props.feedback) {
       props.className = 'feedback'
     }
     return (
       <td {...props}>
-        <span className={color}></span>
+        <div className={color}>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </td>
     )
   }
