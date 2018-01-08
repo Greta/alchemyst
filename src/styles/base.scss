@@ -40,13 +40,21 @@ $grid-colors: (
   green:  #59D37A,
   yellow: #F2D208
 );
+$transition-time: 0.3s;
 
 #garden {
   line-height: 0;
   margin: 10px auto;
   td {
+    position: relative;
+    height: 30px;
+    width: 30px;
     div {
-      width: 30px;
+      position: absolute;
+      top: 1px;
+      right: 1px;
+      bottom: 1px;
+      left: 1px;
       @each $color, $hex in $grid-colors {
         &.#{$color} span {
           background: $hex;
@@ -54,13 +62,32 @@ $grid-colors: (
       }
     }
     span {
-      display: inline-block;
+      position: absolute;
       height: 15px;
       width: 15px;
+      // transition: background-color $transition-time ease;
+      // transform: rotateZ(360deg);
+      &:nth-child(1) {
+        top: 0;
+        left: 0;
+      }
+      &:nth-child(2) {
+        top: 0;
+        right: 0;
+      }
+      &:nth-child(3) {
+        bottom: 0;
+        left: 0;
+      }
+      &:nth-child(4) {
+        bottom: 0;
+        right: 0;
+      }
     }
   }
 }
 
+// Feedback animation
 @keyframes feedback {
   from, to {
     transform: translate3d(0, 0, 0);
@@ -74,9 +101,47 @@ $grid-colors: (
     transform: translate3d(2px, 0, 0);
   }
 }
-
 .feedback {
-  animation-duration: 0.5s;
+  animation-duration: $transition-time;
   animation-fill-mode: both;
   animation-name: feedback;
 }
+
+// Popping animation
+@keyframes pop {
+  0%, 10%, 100% {
+    top: 1px;
+    right: 1px;
+    bottom: 1px;
+    left: 1px;
+  }
+  65% {
+    top: -3px;
+    right: -3px;
+    bottom: -3px;
+    left: -3px;
+  }
+}
+@keyframes popSpan {
+  0%, 30% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(90deg);
+  }
+}
+@keyframes popSpanInverse {
+  0%, 20% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(-90deg);
+  }
+}
+
+// .pop div {
+//   animation: pop $transition-time 1 ease-in-out both;
+//   span {
+//     animation: popSpan $transition-time 1 ease-in-out both;
+//   }
+// }

@@ -27,7 +27,8 @@ class Grid extends Component {
     super()
     this.state = {
       matrix: this.buildGrid(),
-      feedback: this.buildGrid(1)
+      feedback: this.buildGrid(1),
+      group: this.buildGrid(1)
     }
 
     this.fire = this.fire.bind(this)
@@ -41,12 +42,22 @@ class Grid extends Component {
     _.map([...Array(grid.rows).keys()], (row) => {
       matrix[row] = []
       _.map([...Array(grid.cols).keys()], (col) => {
-        matrix[row][col] = empty ? 0 : Math.floor(Math.random() * grid.colors.length) + 1
+        matrix[row][col] = empty ? 0 : this.buildSquare()
       })
     })
     return matrix
   }
+  buildSquare = except => {
+    let sq = Math.floor(Math.random() * grid.colors.length) + 1
+    if (except && sq === except) {
+      return this.buildSquare(except)
+    }
+    return sq
+  }
   fire = props => {
+    // If currently animating, fizzle out
+    if (props.feedback || props.group) return
+
     const group = this.findGroup(props),
       count = _.flatten(group).reduce((a, b) => a + b, 0)
 
@@ -107,16 +118,26 @@ class Grid extends Component {
   hasUnchecked = group => {
     return _.flatten(group).includes(2)
   }
-  pop = () => {
-    console.log('start popping squares')
+  pop = group => {
+    let matrix = this.state.matrix
+    _.each(group, (row, y) => {
+      _.each(row, (pop, x) => {
+        if (pop) {
+          matrix[y][x] = this.buildSquare(matrix[y][x])
+        }
+      })
+    })
+    this.setState({ matrix, group })
   }
   feedback = group => {
     this.setState({ feedback : group })
   }
   resetAnimationClasses = (x, y) => {
-    let feedback = this.state.feedback
+    let feedback = this.state.feedback,
+      group = this.state.group
     feedback[y][x] = 0
-    this.setState({ feedback })
+    group[y][x] = 0
+    this.setState({ feedback, group })
   }
   render() {
     const rows = _.map(this.state.matrix, (row, y) => {
@@ -127,6 +148,7 @@ class Grid extends Component {
             onClick={this.fire}
             key={'sq_' + y + '_' + x}
             feedback={this.state.feedback[y][x]}
+            group={this.state.group[y][x]}
             resetAnimationClasses={this.resetAnimationClasses}
           />
         )
@@ -145,7 +167,7 @@ class Square extends Component {
   componentDidUpdate() {
     // Since we're using css animations set via classes,
     // we need to remove the classes after any animation has finished
-    if (this.props.feedback) {
+    if (this.props.feedback || this.props.group) {
       setTimeout(() => {
         this.props.resetAnimationClasses(this.props.x, this.props.y)
       }, 500)
@@ -158,6 +180,9 @@ class Square extends Component {
     }
     if (this.props.feedback) {
       props.className = 'feedback'
+    }
+    if (this.props.group) {
+      props.className = 'pop'
     }
     return (
       <td {...props}>

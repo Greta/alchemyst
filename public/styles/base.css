@@ -31,22 +31,42 @@ body {
 #garden {
   line-height: 0;
   margin: 10px auto; }
-  #garden td div {
+  #garden td {
+    position: relative;
+    height: 30px;
     width: 30px; }
-    #garden td div.pink span {
-      background: #E50666; }
-    #garden td div.purple span {
-      background: #A100CD; }
-    #garden td div.blue span {
-      background: #04B4B7; }
-    #garden td div.green span {
-      background: #59D37A; }
-    #garden td div.yellow span {
-      background: #F2D208; }
-  #garden td span {
-    display: inline-block;
-    height: 15px;
-    width: 15px; }
+    #garden td div {
+      position: absolute;
+      top: 1px;
+      right: 1px;
+      bottom: 1px;
+      left: 1px; }
+      #garden td div.pink span {
+        background: #E50666; }
+      #garden td div.purple span {
+        background: #A100CD; }
+      #garden td div.blue span {
+        background: #04B4B7; }
+      #garden td div.green span {
+        background: #59D37A; }
+      #garden td div.yellow span {
+        background: #F2D208; }
+    #garden td span {
+      position: absolute;
+      height: 15px;
+      width: 15px; }
+      #garden td span:nth-child(1) {
+        top: 0;
+        left: 0; }
+      #garden td span:nth-child(2) {
+        top: 0;
+        right: 0; }
+      #garden td span:nth-child(3) {
+        bottom: 0;
+        left: 0; }
+      #garden td span:nth-child(4) {
+        bottom: 0;
+        right: 0; }
 
 @keyframes feedback {
   from, to {
@@ -57,6 +77,30 @@ body {
     transform: translate3d(2px, 0, 0); } }
 
 .feedback {
-  animation-duration: 0.5s;
+  animation-duration: 0.3s;
   animation-fill-mode: both;
   animation-name: feedback; }
+
+@keyframes pop {
+  0%, 10%, 100% {
+    top: 1px;
+    right: 1px;
+    bottom: 1px;
+    left: 1px; }
+  65% {
+    top: -3px;
+    right: -3px;
+    bottom: -3px;
+    left: -3px; } }
+
+@keyframes popSpan {
+  0%, 30% {
+    transform: rotate(0); }
+  100% {
+    transform: rotate(90deg); } }
+
+@keyframes popSpanInverse {
+  0%, 20% {
+    transform: rotate(0); }
+  100% {
+    transform: rotate(-90deg); } }
