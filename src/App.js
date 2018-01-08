@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 const _ = require('lodash');
 
 const grid = {
@@ -12,10 +11,6 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">The Garden</h1>
-        </header>
         <Grid />
       </div>
     );
@@ -158,7 +153,7 @@ class Grid extends Component {
       )
     })
     return (
-      <table id='garden'><tbody>{rows}</tbody></table>
+      <table id='grid'><tbody>{rows}</tbody></table>
     )
   }
 }

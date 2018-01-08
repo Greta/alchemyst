@@ -3,68 +3,43 @@ body {
   padding: 0;
   font-family: sans-serif; }
 
-.App {
-  text-align: center; }
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px; }
-
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white; }
-
-.App-title {
-  font-size: 1.5em; }
-
-.App-intro {
-  font-size: large; }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg); }
-  to {
-    transform: rotate(360deg); } }
-
-#garden {
+#grid {
   line-height: 0;
   margin: 10px auto; }
-  #garden td {
+  #grid td {
     position: relative;
     height: 30px;
     width: 30px; }
-    #garden td div {
+    #grid td div {
       position: absolute;
       top: 1px;
       right: 1px;
       bottom: 1px;
       left: 1px; }
-      #garden td div.pink span {
+      #grid td div.pink span {
         background: #E50666; }
-      #garden td div.purple span {
+      #grid td div.purple span {
         background: #A100CD; }
-      #garden td div.blue span {
+      #grid td div.blue span {
         background: #04B4B7; }
-      #garden td div.green span {
+      #grid td div.green span {
         background: #59D37A; }
-      #garden td div.yellow span {
+      #grid td div.yellow span {
         background: #F2D208; }
-    #garden td span {
+    #grid td span {
       position: absolute;
       height: 15px;
       width: 15px; }
-      #garden td span:nth-child(1) {
+      #grid td span:nth-child(1) {
         top: 0;
         left: 0; }
-      #garden td span:nth-child(2) {
+      #grid td span:nth-child(2) {
         top: 0;
         right: 0; }
-      #garden td span:nth-child(3) {
+      #grid td span:nth-child(3) {
         bottom: 0;
         left: 0; }
-      #garden td span:nth-child(4) {
+      #grid td span:nth-child(4) {
         bottom: 0;
         right: 0; }
 
