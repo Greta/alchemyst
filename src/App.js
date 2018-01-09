@@ -8,12 +8,44 @@ const grid = {
 }
 
 class App extends Component {
+  constructor() {
+    super()
+    // Start with nothing
+    const totals = _.map(grid.colors, () => {
+      return 0
+    })
+    this.state = {
+      money: 0,
+      totals
+    }
+
+    this.updateTotals = this.updateTotals.bind(this)
+  }
+  updateTotals = (color, count) => {
+    let totals = this.state.totals
+    totals[color - 1] += count
+    this.setState({ totals })
+  }
   render() {
     return (
       <div className="App">
-        <Grid />
+        <Grid updateTotals={this.updateTotals} />
+        <Counter totals={this.state.totals} />
       </div>
     );
+  }
+}
+
+class Counter extends Component {
+  render() {
+    let totals = _.map(grid.colors, (color, i) => {
+      return (
+        <li key={'total_' + color}>{color}: {this.props.totals[i]}</li>
+      )
+    })
+    return (
+      <ul>{totals}</ul>
+    )
   }
 }
 
@@ -47,17 +79,15 @@ class Grid extends Component {
     }
     return sq
   }
-  fire = props => {
-    // If currently animating, fizzle out
-    if (props.feedback || props.group) return
-
-    const group = this.findGroup(props),
+  fire = sq => {
+    const group = this.findGroup(sq),
       count = _.flatten(group).reduce((a, b) => a + b, 0)
 
     // Count group squares.  If 3 or greater, pop the group
-    // Otherwise, send feedback
+    // and update the totals.  Otherwise, send feedback
     if (count >= 3) {
       this.pop(group)
+      this.props.updateTotals(sq.color, count)
     } else {
       this.feedback(group)
     }
@@ -120,7 +150,8 @@ class Grid extends Component {
         }
       })
     })
-    this.setState({ matrix })
+    // Set the new color matrix and clear feedback
+    this.setState({ matrix, feedback: this.buildGrid(1) })
   }
   feedback = group => {
     this.setState({ feedback : group })
