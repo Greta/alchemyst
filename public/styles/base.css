@@ -29,7 +29,9 @@ body {
     #grid td span {
       position: absolute;
       height: 15px;
-      width: 15px; }
+      width: 15px;
+      transition: background-color 0.3s ease;
+      transform: rotateZ(360deg); }
       #grid td span:nth-child(1) {
         top: 0;
         left: 0; }
@@ -79,3 +81,8 @@ body {
     transform: rotate(0); }
   100% {
     transform: rotate(-90deg); } }
+
+.pop div {
+  animation: pop 0.3s 1 ease-in-out both; }
+  .pop div span {
+    animation: popSpan 0.3s 1 ease-in-out both; }

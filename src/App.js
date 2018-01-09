@@ -22,13 +22,11 @@ class Grid extends Component {
     super()
     this.state = {
       matrix: this.buildGrid(),
-      feedback: this.buildGrid(1),
-      group: this.buildGrid(1)
+      feedback: this.buildGrid(1)
     }
 
     this.fire = this.fire.bind(this)
     this.findGroup = this.findGroup.bind(this)
-    this.resetAnimationClasses = this.resetAnimationClasses.bind(this)
   }
   // Builds a random matrix based on the set grid options (size and colors)
   // Can return an empty matrix, used for tracking clicked groups
@@ -122,17 +120,10 @@ class Grid extends Component {
         }
       })
     })
-    this.setState({ matrix, group })
+    this.setState({ matrix })
   }
   feedback = group => {
     this.setState({ feedback : group })
-  }
-  resetAnimationClasses = (x, y) => {
-    let feedback = this.state.feedback,
-      group = this.state.group
-    feedback[y][x] = 0
-    group[y][x] = 0
-    this.setState({ feedback, group })
   }
   render() {
     const rows = _.map(this.state.matrix, (row, y) => {
@@ -143,8 +134,6 @@ class Grid extends Component {
             onClick={this.fire}
             key={'sq_' + y + '_' + x}
             feedback={this.state.feedback[y][x]}
-            group={this.state.group[y][x]}
-            resetAnimationClasses={this.resetAnimationClasses}
           />
         )
       })
@@ -159,26 +148,40 @@ class Grid extends Component {
 }
 
 class Square extends Component {
-  componentDidUpdate() {
-    // Since we're using css animations set via classes,
-    // we need to remove the classes after any animation has finished
-    if (this.props.feedback || this.props.group) {
-      setTimeout(() => {
-        this.props.resetAnimationClasses(this.props.x, this.props.y)
-      }, 500)
+  constructor(props) {
+    super(props)
+    this.state = {
+      color: this.props.color,
+      class: ''
     }
   }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.color !== this.state.color) this.updateColor(nextProps.color)
+    if (nextProps.feedback) this.sendFeedback()
+  }
+  updateColor = newColor => {
+    this.setState({ color: newColor, class: 'pop' }, () => {
+      setTimeout(() => {
+        this.resetAnimationClass()
+      }, 300)
+    })
+  }
+  sendFeedback = () => {
+    this.setState({ class: 'feedback' }, () => {
+      setTimeout(() => {
+        this.resetAnimationClass()
+      }, 300)
+    })
+  }
+  resetAnimationClass = () => {
+    this.setState({ class: '' })
+  }
   render() {
-    const color = grid.colors[this.props.color - 1]
+    const color = grid.colors[this.state.color - 1]
     let props = {
       onClick: () => {this.props.onClick(this.props)}
     }
-    if (this.props.feedback) {
-      props.className = 'feedback'
-    }
-    if (this.props.group) {
-      props.className = 'pop'
-    }
+    if (this.state.class) props.className = this.state.class
     return (
       <td {...props}>
         <div className={color}>

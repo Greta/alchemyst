@@ -36,8 +36,8 @@ $transition-time: 0.3s;
       position: absolute;
       height: 15px;
       width: 15px;
-      // transition: background-color $transition-time ease;
-      // transform: rotateZ(360deg);
+      transition: background-color $transition-time ease;
+      transform: rotateZ(360deg);
       &:nth-child(1) {
         top: 0;
         left: 0;
@@ -110,9 +110,9 @@ $transition-time: 0.3s;
   }
 }
 
-// .pop div {
-//   animation: pop $transition-time 1 ease-in-out both;
-//   span {
-//     animation: popSpan $transition-time 1 ease-in-out both;
-//   }
-// }
+.pop div {
+  animation: pop $transition-time 1 ease-in-out both;
+  span {
+    animation: popSpan $transition-time 1 ease-in-out both;
+  }
+}
