@@ -7,6 +7,36 @@ const grid = {
   colors: ['pink', 'blue', 'green', 'purple']
 }
 
+const recipes = {
+  'Mana': {
+    needs: { blue: 100 }
+  },
+  'Health': {
+    needs: { pink: 100 }
+  },
+  'Mixture': {
+    needs: { blue: 50, pink: 50, purple: 50 }
+  },
+  'Night Sight': {
+    needs: { purple: 150 }
+  },
+  'Love': {
+    needs: { pink: 1000, purple: 500 }
+  },
+  'Growth': {
+    needs: { green: 150 }
+  },
+  'Tincture': {
+    needs: { green: 100, blue: 100 }
+  },
+  'Strength': {
+    needs: { pink: 200, green: 250 }
+  },
+  'Sleep': {
+    needs: { blue: 100, purple: 100, green: 100 }
+  }
+}
+
 class App extends Component {
   constructor() {
     super()
@@ -30,7 +60,10 @@ class App extends Component {
     return (
       <div className="App">
         <Grid updateTotals={this.updateTotals} />
-        <Counter totals={this.state.totals} />
+        <div className="right">
+          <Counter totals={this.state.totals} />
+          <Recipes />
+        </div>
       </div>
     );
   }
@@ -38,13 +71,40 @@ class App extends Component {
 
 class Counter extends Component {
   render() {
-    let totals = _.map(grid.colors, (color, i) => {
+    const totals = _.map(grid.colors, (color, i) => {
       return (
-        <li key={'total_' + color}>{color}: {this.props.totals[i]}</li>
+        <li key={'total_' + color} className={color}>{this.props.totals[i]}</li>
       )
     })
     return (
-      <ul>{totals}</ul>
+      <div id="counter">
+        <h3>Inventory</h3>
+        <ul>{totals}</ul>
+      </div>
+    )
+  }
+}
+
+class Recipes extends Component {
+  render() {
+    const list = _.map(recipes, (recipe, name) => {
+      const ingredients = _.map(recipe.needs, (amt, item) => {
+        return (
+          <span className={item} key={item}>{amt}</span>
+        )
+      })
+      return (
+        <li key={name}>
+          <div className="name">{name}</div>
+          <div className="ingredients">{ingredients}</div>
+        </li>
+      )
+    })
+    return (
+      <div id="recipes">
+        <h3>Recipes</h3>
+        <ul>{list}</ul>
+      </div>
     )
   }
 }

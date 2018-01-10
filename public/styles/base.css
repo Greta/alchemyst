@@ -3,9 +3,17 @@ body {
   padding: 0;
   font-family: sans-serif; }
 
+.App {
+  width: 500px;
+  margin: 0 auto;
+  padding-top: 50px; }
+
+.right {
+  float: right; }
+
 #grid {
   line-height: 0;
-  margin: 10px auto; }
+  float: left; }
   #grid td {
     position: relative;
     height: 30px;
@@ -44,6 +52,68 @@ body {
       #grid td span:nth-child(4) {
         bottom: 0;
         right: 0; }
+
+#counter, #recipes {
+  border-radius: 5px;
+  padding: 10px 25px;
+  color: white; }
+  #counter h3, #recipes h3 {
+    margin: 10px 0; }
+  #counter ul, #recipes ul {
+    list-style: none;
+    padding: 0; }
+
+#counter {
+  background: #DC9654;
+  color: #a86322;
+  margin-bottom: 20px; }
+  #counter ul * + * {
+    margin-left: 5px; }
+  #counter ul li {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    display: inline-block;
+    text-align: center; }
+    #counter ul li.pink {
+      background: #E50666;
+      color: #82033a; }
+    #counter ul li.purple {
+      background: #A100CD;
+      color: #510067; }
+    #counter ul li.blue {
+      background: #04B4B7;
+      color: #025253; }
+    #counter ul li.green {
+      background: #59D37A;
+      color: #299d49; }
+    #counter ul li.yellow {
+      background: #F2D208;
+      color: #8f7c05; }
+
+#recipes {
+  background: #E8E8E8;
+  color: #9c9c9c; }
+  #recipes ul li {
+    padding: 5px 0; }
+    #recipes ul li div {
+      display: inline-block; }
+      #recipes ul li div.name {
+        width: 90px; }
+      #recipes ul li div.ingredients * + * {
+        margin-left: 5px; }
+      #recipes ul li div.ingredients span {
+        display: inline-block; }
+    #recipes ul li span.pink {
+      color: #E50666; }
+    #recipes ul li span.purple {
+      color: #A100CD; }
+    #recipes ul li span.blue {
+      color: #04B4B7; }
+    #recipes ul li span.green {
+      color: #59D37A; }
+    #recipes ul li span.yellow {
+      color: #F2D208; }
 
 @keyframes feedback {
   from, to {
