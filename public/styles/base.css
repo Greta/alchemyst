@@ -100,20 +100,58 @@ body {
       display: inline-block; }
       #recipes ul li div.name {
         width: 90px; }
-      #recipes ul li div.ingredients * + * {
+      #recipes ul li div.mats * + * {
         margin-left: 5px; }
-      #recipes ul li div.ingredients span {
+      #recipes ul li div.mats span {
         display: inline-block; }
-    #recipes ul li span.pink {
+    #recipes ul li .pink {
+      transition: all 0.2s ease;
       color: #E50666; }
-    #recipes ul li span.purple {
+    #recipes ul li.canMake .pink {
+      color: #E8E8E8;
+      text-shadow: 0px 0px 6px #b30550; }
+    #recipes ul li.canMake:hover .pink {
+      text-shadow: 0px 0px 6px #9a0445, 0px 0px 6px #9a0445; }
+    #recipes ul li .purple {
+      transition: all 0.2s ease;
       color: #A100CD; }
-    #recipes ul li span.blue {
+    #recipes ul li.canMake .purple {
+      color: #E8E8E8;
+      text-shadow: 0px 0px 6px #79009a; }
+    #recipes ul li.canMake:hover .purple {
+      text-shadow: 0px 0px 6px #650081, 0px 0px 6px #650081; }
+    #recipes ul li .blue {
+      transition: all 0.2s ease;
       color: #04B4B7; }
-    #recipes ul li span.green {
+    #recipes ul li.canMake .blue {
+      color: #E8E8E8;
+      text-shadow: 0px 0px 6px #038385; }
+    #recipes ul li.canMake:hover .blue {
+      text-shadow: 0px 0px 6px #026a6c, 0px 0px 6px #026a6c; }
+    #recipes ul li .green {
+      transition: all 0.2s ease;
       color: #59D37A; }
-    #recipes ul li span.yellow {
+    #recipes ul li.canMake .green {
+      color: #E8E8E8;
+      text-shadow: 0px 0px 6px #34c55b; }
+    #recipes ul li.canMake:hover .green {
+      text-shadow: 0px 0px 6px #2fb152, 0px 0px 6px #2fb152; }
+    #recipes ul li .yellow {
+      transition: all 0.2s ease;
       color: #F2D208; }
+    #recipes ul li.canMake .yellow {
+      color: #E8E8E8;
+      text-shadow: 0px 0px 6px #c1a706; }
+    #recipes ul li.canMake:hover .yellow {
+      text-shadow: 0px 0px 6px #a89206, 0px 0px 6px #a89206; }
+    #recipes ul li.canMake {
+      cursor: pointer; }
+      #recipes ul li.canMake .name {
+        transition: all 0.2s ease;
+        color: #E8E8E8;
+        text-shadow: 0px 0px 6px black; }
+      #recipes ul li.canMake:hover .name {
+        text-shadow: 0px 0px 6px black, 0px 0px 6px black; }
 
 @keyframes feedback {
   from, to {

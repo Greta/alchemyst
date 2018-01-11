@@ -9,31 +9,31 @@ const grid = {
 
 const recipes = {
   'Mana': {
-    needs: { blue: 100 }
+    mats: { blue: 100 }
   },
   'Health': {
-    needs: { pink: 100 }
+    mats: { pink: 5 }
   },
   'Mixture': {
-    needs: { blue: 50, pink: 50, purple: 50 }
+    mats: { blue: 50, pink: 50, purple: 50 }
   },
   'Night Sight': {
-    needs: { purple: 150 }
+    mats: { purple: 150 }
   },
   'Love': {
-    needs: { pink: 1000, purple: 500 }
+    mats: { pink: 1000, purple: 500 }
   },
   'Growth': {
-    needs: { green: 150 }
+    mats: { green: 150 }
   },
   'Tincture': {
-    needs: { green: 100, blue: 100 }
+    mats: { green: 100, blue: 100 }
   },
   'Strength': {
-    needs: { pink: 200, green: 250 }
+    mats: { pink: 200, green: 250 }
   },
   'Sleep': {
-    needs: { blue: 100, purple: 100, green: 100 }
+    mats: { blue: 100, purple: 100, green: 100 }
   }
 }
 
@@ -56,13 +56,16 @@ class App extends Component {
     totals[color - 1] += count
     this.setState({ totals })
   }
+  makePotion = (recipe) => {
+    console.log(recipe)
+  }
   render() {
     return (
       <div className="App">
         <Grid updateTotals={this.updateTotals} />
         <div className="right">
           <Counter totals={this.state.totals} />
-          <Recipes />
+          <Recipes totals={this.state.totals} onClick={this.makePotion} />
         </div>
       </div>
     );
@@ -88,15 +91,26 @@ class Counter extends Component {
 class Recipes extends Component {
   render() {
     const list = _.map(recipes, (recipe, name) => {
-      const ingredients = _.map(recipe.needs, (amt, item) => {
+      const mats = _.map(recipe.mats, (amt, item) => {
         return (
           <span className={item} key={item}>{amt}</span>
         )
       })
+
+      // Check to see if you have enough materials to make the recipe
+      const needsMats = _.filter(recipe.mats, (amt, item) => {
+        const colorIndex = grid.colors.findIndex(color => { return item === color })
+        return amt > this.props.totals[colorIndex]
+      })
+      let props = {}
+      if (!needsMats.length) {
+        props.className = 'canMake'
+        props.onClick = () => { this.props.onClick(name) }
+      }
       return (
-        <li key={name}>
+        <li key={name} {...props}>
           <div className="name">{name}</div>
-          <div className="ingredients">{ingredients}</div>
+          <div className="mats">{mats}</div>
         </li>
       )
     })

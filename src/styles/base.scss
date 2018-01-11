@@ -118,7 +118,7 @@ $transition-time: 0.3s;
         &.name {
           width: 90px;
         }
-        &.ingredients {
+        &.mats {
           * + * {
             margin-left: 5px;
           }
@@ -127,10 +127,31 @@ $transition-time: 0.3s;
           }
         }
       }
-      span {
-        @each $color, $hex in $grid-colors {
-          &.#{$color} {
-            color: $hex;
+      @each $color, $hex in $grid-colors {
+        .#{$color} {
+          transition: all 0.2s ease;
+          color: $hex;
+        }
+        &.canMake .#{$color} {
+          color: $bgColor;
+          text-shadow: 0px 0px 6px darken($hex, 10%);
+        }
+        &.canMake:hover .#{$color} {
+          text-shadow: 0px 0px 6px darken($hex, 15%),
+                       0px 0px 6px darken($hex, 15%);
+        }
+      }
+      &.canMake {
+        cursor: pointer;
+        .name {
+          transition: all 0.2s ease;
+          color: $bgColor;
+          text-shadow: 0px 0px 6px rgba(0, 0, 0, 1);
+        }
+        &:hover {
+          .name {
+            text-shadow: 0px 0px 6px rgba(0, 0, 0, 1),
+                         0px 0px 6px rgba(0, 0, 0, 1);
           }
         }
       }
