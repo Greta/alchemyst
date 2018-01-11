@@ -9,32 +9,37 @@ const grid = {
 
 const recipes = {
   'Mana': {
-    mats: { blue: 100 }
+    mats: { blue: 10 }
   },
   'Health': {
-    mats: { pink: 5 }
+    mats: { pink: 10 }
   },
   'Mixture': {
-    mats: { blue: 50, pink: 50, purple: 50 }
+    mats: { blue: 5, pink: 5, purple: 5 }
   },
   'Night Sight': {
-    mats: { purple: 150 }
+    mats: { purple: 15 }
   },
   'Love': {
-    mats: { pink: 1000, purple: 500 }
+    mats: { pink: 100, purple: 50 }
   },
   'Growth': {
-    mats: { green: 150 }
+    mats: { green: 15 }
   },
   'Tincture': {
-    mats: { green: 100, blue: 100 }
+    mats: { green: 10, blue: 10 }
   },
   'Strength': {
-    mats: { pink: 200, green: 250 }
+    mats: { pink: 20, green: 25 }
   },
   'Sleep': {
-    mats: { blue: 100, purple: 100, green: 100 }
+    mats: { blue: 10, purple: 10, green: 10 }
   }
+}
+
+// Returns the index of a given color in App state.totals
+const getColorIndex = color => {
+  return grid.colors.findIndex(c => { return color === c })
 }
 
 class App extends Component {
@@ -46,6 +51,7 @@ class App extends Component {
     })
     this.state = {
       money: 0,
+      potions: {},
       totals
     }
 
@@ -56,33 +62,61 @@ class App extends Component {
     totals[color - 1] += count
     this.setState({ totals })
   }
-  makePotion = (recipe) => {
-    console.log(recipe)
+  brewPotion = recipe => {
+    let potions = this.state.potions,
+      totals = this.state.totals
+
+    // Update the new totals
+    const mats = recipes[recipe].mats
+    _.each(mats, (amt, mat) => {
+      const colorIndex = getColorIndex(mat)
+      totals[colorIndex] = totals[colorIndex] - amt
+    })
+    // Add the potion to the inventory
+    if (potions[recipe]) {
+      potions[recipe]++
+    } else {
+      potions[recipe] = 1
+    }
+    this.setState({ potions, totals })
+  }
+  previewPotion = recipe => {
+
   }
   render() {
     return (
       <div className="App">
         <Grid updateTotals={this.updateTotals} />
         <div className="right">
-          <Counter totals={this.state.totals} />
-          <Recipes totals={this.state.totals} onClick={this.makePotion} />
+          <Inventory {...this.state} />
+          <Recipes totals={this.state.totals} onClick={this.brewPotion} />
         </div>
       </div>
     );
   }
 }
 
-class Counter extends Component {
+class Inventory extends Component {
   render() {
     const totals = _.map(grid.colors, (color, i) => {
       return (
         <li key={'total_' + color} className={color}>{this.props.totals[i]}</li>
       )
     })
+    const potions = _.map(this.props.potions, (amt, name) => {
+      return (
+        <li key={name}>
+          <div className="name">{name}</div>
+          <div className="amt">{amt}</div>
+        </li>
+      )
+    })
     return (
-      <div id="counter">
-        <h3>Inventory</h3>
-        <ul>{totals}</ul>
+      <div id="inventory">
+        <h3>Raw Materials</h3>
+        <ul className="totals">{totals}</ul>
+        <h3>Potions</h3>
+        <ul className="potions">{potions}</ul>
       </div>
     )
   }
@@ -99,7 +133,7 @@ class Recipes extends Component {
 
       // Check to see if you have enough materials to make the recipe
       const needsMats = _.filter(recipe.mats, (amt, item) => {
-        const colorIndex = grid.colors.findIndex(color => { return item === color })
+        const colorIndex = getColorIndex(item)
         return amt > this.props.totals[colorIndex]
       })
       let props = {}

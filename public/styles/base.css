@@ -53,43 +53,47 @@ body {
         bottom: 0;
         right: 0; }
 
-#counter, #recipes {
+#inventory, #recipes {
   border-radius: 5px;
   padding: 10px 25px;
   color: white; }
-  #counter h3, #recipes h3 {
+  #inventory h3, #recipes h3 {
     margin: 10px 0; }
-  #counter ul, #recipes ul {
+  #inventory ul, #recipes ul {
     list-style: none;
     padding: 0; }
 
-#counter {
+#inventory {
   background: #DC9654;
   color: #a86322;
   margin-bottom: 20px; }
-  #counter ul * + * {
+  #inventory .totals * + * {
     margin-left: 5px; }
-  #counter ul li {
+  #inventory .totals li {
     width: 40px;
     height: 40px;
     line-height: 40px;
     display: inline-block;
     text-align: center; }
-    #counter ul li.pink {
+    #inventory .totals li.pink {
       background: #E50666;
       color: #82033a; }
-    #counter ul li.purple {
+    #inventory .totals li.purple {
       background: #A100CD;
       color: #510067; }
-    #counter ul li.blue {
+    #inventory .totals li.blue {
       background: #04B4B7;
       color: #025253; }
-    #counter ul li.green {
+    #inventory .totals li.green {
       background: #59D37A;
       color: #299d49; }
-    #counter ul li.yellow {
+    #inventory .totals li.yellow {
       background: #F2D208;
       color: #8f7c05; }
+  #inventory .potions .name, #inventory .potions .amt {
+    display: inline-block; }
+  #inventory .potions .name {
+    width: 100px; }
 
 #recipes {
   background: #E8E8E8;

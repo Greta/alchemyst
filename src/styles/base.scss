@@ -68,7 +68,7 @@ $transition-time: 0.3s;
   }
 }
 
-#counter, #recipes {
+#inventory, #recipes {
   border-radius: 5px;
   padding: 10px 25px;
   color: white;
@@ -81,12 +81,12 @@ $transition-time: 0.3s;
   }
 }
 
-#counter {
+#inventory {
   $bgColor: #DC9654;
   background: $bgColor;
   color: darken($bgColor, 20%);
   margin-bottom: 20px;
-  ul {
+  .totals {
     * + * {
       margin-left: 5px;
     }
@@ -102,6 +102,14 @@ $transition-time: 0.3s;
           color: darken($hex, 20%);
         }
       }
+    }
+  }
+  .potions {
+    .name, .amt {
+      display: inline-block;
+    }
+    .name {
+      width: 100px;
     }
   }
 }
