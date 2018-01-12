@@ -1,40 +1,11 @@
-import React, { Component } from 'react';
-const _ = require('lodash');
+import React, { Component } from 'react'
+import { potions } from './data/potions'
+const _ = require('lodash')
 
 const grid = {
   rows: 8,
   cols: 7,
   colors: ['pink', 'blue', 'green', 'purple']
-}
-
-const recipes = {
-  'Mana': {
-    mats: { blue: 10 }
-  },
-  'Health': {
-    mats: { pink: 10 }
-  },
-  'Mixture': {
-    mats: { blue: 5, pink: 5, purple: 5 }
-  },
-  'Night Sight': {
-    mats: { purple: 15 }
-  },
-  'Love': {
-    mats: { pink: 100, purple: 50 }
-  },
-  'Growth': {
-    mats: { green: 15 }
-  },
-  'Tincture': {
-    mats: { green: 10, blue: 10 }
-  },
-  'Strength': {
-    mats: { pink: 20, green: 25 }
-  },
-  'Sleep': {
-    mats: { blue: 10, purple: 10, green: 10 }
-  }
 }
 
 // Returns the index of a given color in App state.totals
@@ -51,10 +22,13 @@ class App extends Component {
     })
     this.state = {
       money: 0,
-      potions: {},
+      inventory: {
+        potions: {},
+        items: {}
+      },
+      orders: [],
       totals
     }
-
     this.updateTotals = this.updateTotals.bind(this)
   }
   updateTotals = (color, count) => {
@@ -62,35 +36,40 @@ class App extends Component {
     totals[color - 1] += count
     this.setState({ totals })
   }
-  brewPotion = recipe => {
-    let potions = this.state.potions,
+  brewPotion = potion => {
+    let inventory = this.state.inventory,
       totals = this.state.totals
 
     // Update the new totals
-    const mats = recipes[recipe].mats
-    _.each(mats, (amt, mat) => {
+    _.each(potion.mats, (amt, mat) => {
       const colorIndex = getColorIndex(mat)
       totals[colorIndex] = totals[colorIndex] - amt
     })
     // Add the potion to the inventory
-    if (potions[recipe]) {
-      potions[recipe]++
+    if (inventory.potions[potion.name]) {
+      inventory.potions[potion.name]++
     } else {
-      potions[recipe] = 1
+      inventory.potions[potion.name] = 1
     }
-    this.setState({ potions, totals })
+    this.setState({ inventory, totals })
   }
   previewPotion = recipe => {
-
+    // TODO: Visualize post-brew mat values
+  }
+  createOrder = () => {
+    // TODO: Create orders based on potion level
   }
   render() {
     return (
       <div className="App">
-        <Grid updateTotals={this.updateTotals} />
-        <div className="right">
+        <div className="left">
           <Inventory {...this.state} />
-          <Recipes totals={this.state.totals} onClick={this.brewPotion} />
         </div>
+        <div className="right">
+          <Recipes totals={this.state.totals} onClick={this.brewPotion} />
+          <br /><button onClick={this.createOrder}>createOrder</button>
+        </div>
+        <Grid updateTotals={this.updateTotals} />
       </div>
     );
   }
@@ -103,7 +82,7 @@ class Inventory extends Component {
         <li key={'total_' + color} className={color}>{this.props.totals[i]}</li>
       )
     })
-    const potions = _.map(this.props.potions, (amt, name) => {
+    const potions = _.map(this.props.inventory.potions, (amt, name) => {
       return (
         <li key={name}>
           <div className="name">{name}</div>
@@ -124,26 +103,26 @@ class Inventory extends Component {
 
 class Recipes extends Component {
   render() {
-    const list = _.map(recipes, (recipe, name) => {
-      const mats = _.map(recipe.mats, (amt, item) => {
+    const list = _.map(potions, potion => {
+      const mats = _.map(potion.mats, (amt, mat) => {
         return (
-          <span className={item} key={item}>{amt}</span>
+          <span className={mat} key={mat}>{amt}</span>
         )
       })
 
       // Check to see if you have enough materials to make the recipe
-      const needsMats = _.filter(recipe.mats, (amt, item) => {
-        const colorIndex = getColorIndex(item)
+      const needsMats = _.filter(potion.mats, (amt, mat) => {
+        const colorIndex = getColorIndex(mat)
         return amt > this.props.totals[colorIndex]
       })
       let props = {}
       if (!needsMats.length) {
         props.className = 'canMake'
-        props.onClick = () => { this.props.onClick(name) }
+        props.onClick = () => { this.props.onClick(potion) }
       }
       return (
-        <li key={name} {...props}>
-          <div className="name">{name}</div>
+        <li key={potion.id} {...props}>
+          <div className="name">{potion.name}</div>
           <div className="mats">{mats}</div>
         </li>
       )

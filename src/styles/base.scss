@@ -14,8 +14,8 @@ $grid-colors: (
 $transition-time: 0.3s;
 
 .App {
-  width: 500px;
-  margin: 0 auto;
+  width: 800px;
+  margin: auto;
   padding-top: 50px;
 }
 
@@ -23,9 +23,13 @@ $transition-time: 0.3s;
   float: right;
 }
 
-#grid {
-  line-height: 0;
+.left {
   float: left;
+}
+
+#grid {
+  margin: auto;
+  line-height: 0;
   td {
     position: relative;
     height: 30px;
