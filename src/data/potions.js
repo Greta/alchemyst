@@ -1,7 +1,7 @@
 const _ = require('lodash')
 
 // Base Potion Data
-let potions = [
+let _potions = [
   {
     name: 'Mana',
     mats: { blue: 10 }
@@ -44,15 +44,15 @@ const getTotalMats = potion => Object.values(potion.mats).reduce((a, b) => a + b
 
 // Add totals, potion level, and name based id
 // TODO: Add mats per level to base game options
-_.each(potions, potion => {
+_.each(_potions, potion => {
   const totalMats = getTotalMats(potion)
   potion.totalMats = totalMats
   potion.level = Math.floor(totalMats / 45) + 1
   potion.id = potion.name.replace(' ', '_').toLowerCase()
 })
 
-const getPotionByName = name => _.find(potions, { name })
-const getPotionById = id => _.find(potions, { id })
-const getPotionsByLevel = level => _.filter(potions, potion => { return level === potion.level })
+const getPotionByName = name => _.find(_potions, { name })
+const getPotionById = id => _.find(_potions, { id })
+const getPotionsByLevel = level => _.filter(_potions, potion => { return level === potion.level })
 
-export { potions, getPotionByName, getPotionById, getPotionsByLevel }
+export { _potions, getPotionByName, getPotionById, getPotionsByLevel }
