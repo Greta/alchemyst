@@ -36,20 +36,23 @@ let potions = [
   },
   {
     name: 'Love',
-    mats: { pink: 100, purple: 50 }
+    mats: { pink: 75, purple: 50 }
   }
 ]
 
 const getTotalMats = potion => Object.values(potion.mats).reduce((a, b) => a + b)
 
 // Add totals, potion level, and name based id
+// TODO: Add mats per level to base game options
 _.each(potions, potion => {
   const totalMats = getTotalMats(potion)
   potion.totalMats = totalMats
-  potion.level = Math.ceil(totalMats / 50)
+  potion.level = Math.floor(totalMats / 45) + 1
   potion.id = potion.name.replace(' ', '_').toLowerCase()
 })
 
 const getPotionByName = name => _.find(potions, { name })
+const getPotionById = id => _.find(potions, { id })
+const getPotionsByLevel = level => _.filter(potions, potion => { return level === potion.level })
 
-export { potions, getPotionByName }
+export { potions, getPotionByName, getPotionById, getPotionsByLevel }

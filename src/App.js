@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { potions } from './data/potions'
+import { potions, getPotionById, getPotionsByLevel } from './data/potions'
 const _ = require('lodash')
 
 const grid = {
@@ -11,6 +11,10 @@ const grid = {
 // Returns the index of a given color in App state.totals
 const getColorIndex = color => {
   return grid.colors.findIndex(c => { return color === c })
+}
+
+const randomNumUpTo = max => {
+  return Math.floor(Math.random() * max) + 1
 }
 
 class App extends Component {
@@ -57,7 +61,54 @@ class App extends Component {
     // TODO: Visualize post-brew mat values
   }
   createOrder = () => {
-    // TODO: Create orders based on potion level
+    // Roll for rarity!
+    const roll = randomNumUpTo(20)
+    let level, maxAmt, maxTypeAmt, request = []
+
+    // Set up the basics for each level of order: rare, uncommon, and common
+    if (roll === 20) {
+      level = 3
+      maxAmt = 1
+      maxTypeAmt = 1
+    } else if (roll > 15) {
+      level = 2
+      maxAmt = 3
+      maxTypeAmt = 2
+    } else {
+      level = 1
+      maxAmt = 5
+      maxTypeAmt = 3
+    }
+
+    const potionPool = getPotionsByLevel(level)
+    let fillOrder = randomNumUpTo(maxAmt)
+
+    while (fillOrder) {
+      const qty = randomNumUpTo(fillOrder)
+      if (request.length === maxTypeAmt) {
+        // If the maximum # of potion types has been reached, add this quantity
+        // to a random potion type already in the order
+        const i = randomNumUpTo(request.length) - 1
+        request[i].qty = request[i].qty + qty
+      } else {
+        // Else, add a new potion type to the order and
+        // remove that type from the potion pool
+        const i = _.random(1, potionPool.length) - 1,
+          potion = _.slice(potionPool, i, (i + 1))
+        request.push({ id : potion[0].id, qty })
+      }
+      fillOrder = fillOrder - qty
+    }
+
+    // Now calculate a price
+    const totalMaterials = _.reduce(request, (a, b) => {
+        return a + getPotionById(b.id).totalMats * b.qty
+      }, 0),
+      coefficient = 1 + ((roll - 10)/10),
+      reward = Math.ceil((totalMaterials * coefficient)/5) * 5
+
+    const order = { request, level, reward }
+    console.log(order)
   }
   render() {
     return (
