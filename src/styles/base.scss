@@ -4,6 +4,14 @@ body {
   font-family: sans-serif;
 }
 
+button {
+  border: 0;
+  border-radius: 3px;
+  padding: 0.25em 0.5em;
+  cursor: pointer;
+  transition: all ease 0.2s;
+}
+
 $grid-colors: (
   pink:   #E50666,
   purple: #A100CD,
@@ -72,10 +80,9 @@ $transition-time: 0.3s;
   }
 }
 
-#inventory, #recipes {
+#inventory, #recipes, #orders {
   border-radius: 5px;
   padding: 10px 25px;
-  color: white;
   h3 {
     margin: 10px 0;
   }
@@ -167,6 +174,43 @@ $transition-time: 0.3s;
           }
         }
       }
+    }
+  }
+}
+
+#orders {
+  $bgColor: #528DEA;
+  background: $bgColor;
+  color: darken($bgColor, 30%);
+  width: 150px;
+  position: absolute;
+  left: 20px;
+  top: 20px;
+
+  button {
+    background: darken($bgColor, 30%);
+    color: $bgColor;
+    &:hover {
+      background: darken($bgColor, 20%);
+    }
+  }
+
+  .order {
+    margin-top: 5px;
+    font-size: 14px;
+    position: relative;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid lighten($bgColor, 10%);
+    ul {
+      margin: 0
+    }
+    .reward {
+      color: #EFC338;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
     }
   }
 }

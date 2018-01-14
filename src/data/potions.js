@@ -43,7 +43,7 @@ let _potions = [
 const getTotalMats = potion => Object.values(potion.mats).reduce((a, b) => a + b)
 
 // Add totals, potion level, and name based id
-// TODO: Add mats per level to base game options
+// TODO: Add mats per level to base game options (it's the number 45 in code below)
 _.each(_potions, potion => {
   const totalMats = getTotalMats(potion)
   potion.totalMats = totalMats

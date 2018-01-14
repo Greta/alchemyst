@@ -16,7 +16,7 @@ class App extends Component {
       return 0
     })
     this.state = {
-      money: 0,
+      gold: 0,
       inventory: {
         potions: {},
         items: {}
@@ -25,6 +25,7 @@ class App extends Component {
       totals
     }
     this.updateTotals = this.updateTotals.bind(this)
+    this.updateGold = this.updateGold.bind(this)
   }
   updateTotals = (color, count) => {
     let totals = this.state.totals
@@ -50,6 +51,33 @@ class App extends Component {
   }
   previewPotion = recipe => {
     // TODO: Visualize post-brew mat values
+  }
+  updateGold = diff => {
+    let gold = _.sum(this.state.gold, diff)
+    this.setState({ gold })
+  }
+  render() {
+    return (
+      <div className="App">
+        <Orders updateGold={this.updateGold} />
+        <div className="left">
+          <Inventory {...this.state} />
+        </div>
+        <div className="right">
+          <Recipes totals={this.state.totals} onClick={this.brewPotion} />
+        </div>
+        <Grid updateTotals={this.updateTotals} />
+      </div>
+    );
+  }
+}
+
+class Orders extends Component {
+  constructor() {
+    super()
+    this.state = {
+      orders: []
+    }
   }
   createOrder = () => {
     // Roll for rarity!
@@ -98,22 +126,36 @@ class App extends Component {
       coefficient = 1 + ((roll - 10)/10),
       reward = Math.ceil((totalMaterials * coefficient)/5) * 5
 
+    // Done!  Update the state
     const order = { request, level, reward }
-    console.log(order)
+    let orders = this.state.orders
+    orders.push(order)
+    this.setState({ order })
   }
   render() {
+    const orders = _.map(this.state.orders, (order, orderIndex) => {
+      const items = _.map(order.request, (item, i) => {
+        const name = getPotionById(item.id).name
+        return (
+          <li key={'item_' + orderIndex + '_' + i}>
+            <span className='qty'>{item.qty}x</span> {name}
+          </li>
+        )
+      })
+      return (
+        <div key={'order_' + orderIndex} className={'order level_' + order.level}>
+          <ul>{items}</ul>
+          <div className='reward'>{order.reward}g</div>
+        </div>
+      )
+    })
     return (
-      <div className="App">
-        <div className="left">
-          <Inventory {...this.state} />
-        </div>
-        <div className="right">
-          <Recipes totals={this.state.totals} onClick={this.brewPotion} />
-          <br /><button onClick={this.createOrder}>createOrder</button>
-        </div>
-        <Grid updateTotals={this.updateTotals} />
+      <div id='orders'>
+        <h3>Orders</h3>
+        <button onClick={this.createOrder}>createOrder</button>
+        {orders}
       </div>
-    );
+    )
   }
 }
 

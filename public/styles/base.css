@@ -3,6 +3,13 @@ body {
   padding: 0;
   font-family: sans-serif; }
 
+button {
+  border: 0;
+  border-radius: 3px;
+  padding: 0.25em 0.5em;
+  cursor: pointer;
+  transition: all ease 0.2s; }
+
 .App {
   width: 800px;
   margin: auto;
@@ -56,13 +63,12 @@ body {
         bottom: 0;
         right: 0; }
 
-#inventory, #recipes {
+#inventory, #recipes, #orders {
   border-radius: 5px;
-  padding: 10px 25px;
-  color: white; }
-  #inventory h3, #recipes h3 {
+  padding: 10px 25px; }
+  #inventory h3, #recipes h3, #orders h3 {
     margin: 10px 0; }
-  #inventory ul, #recipes ul {
+  #inventory ul, #recipes ul, #orders ul {
     list-style: none;
     padding: 0; }
 
@@ -159,6 +165,34 @@ body {
         text-shadow: 0px 0px 6px black; }
       #recipes ul li.canMake:hover .name {
         text-shadow: 0px 0px 6px black, 0px 0px 6px black; }
+
+#orders {
+  background: #528DEA;
+  color: #124391;
+  width: 150px;
+  position: absolute;
+  left: 20px;
+  top: 20px; }
+  #orders button {
+    background: #124391;
+    color: #528DEA; }
+    #orders button:hover {
+      background: #1758bf; }
+  #orders .order {
+    margin-top: 5px;
+    font-size: 14px;
+    position: relative;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #7fabf0; }
+    #orders .order ul {
+      margin: 0; }
+    #orders .order .reward {
+      color: #EFC338;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%); }
 
 @keyframes feedback {
   from, to {
