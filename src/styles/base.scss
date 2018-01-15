@@ -123,6 +123,9 @@ $transition-time: 0.3s;
       width: 100px;
     }
   }
+  .gold {
+    color: #EFC338;
+  }
 }
 
 #recipes {
@@ -211,6 +214,10 @@ $transition-time: 0.3s;
       right: 10px;
       top: 50%;
       transform: translateY(-50%);
+    }
+    &.canFill {
+      color: white;
+      cursor: pointer;
     }
   }
 }

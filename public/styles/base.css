@@ -103,6 +103,8 @@ button {
     display: inline-block; }
   #inventory .potions .name {
     width: 100px; }
+  #inventory .gold {
+    color: #EFC338; }
 
 #recipes {
   background: #E8E8E8;
@@ -193,6 +195,9 @@ button {
       right: 10px;
       top: 50%;
       transform: translateY(-50%); }
+    #orders .order.canFill {
+      color: white;
+      cursor: pointer; }
 
 @keyframes feedback {
   from, to {
