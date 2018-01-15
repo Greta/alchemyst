@@ -103,23 +103,23 @@ class Orders extends Component {
     }
 
     const potionPool = getPotionsByLevel(level)
-    let fillOrder = _.random(1, maxAmt)
+    let addPotions = _.random(1, maxAmt)
 
-    while (fillOrder) {
-      const qty = _.random(1, fillOrder)
-      if (request.length === maxTypeAmt) {
-        // If the maximum # of potion types has been reached, add this quantity
-        // to a random potion type already in the order
+    while (addPotions) {
+      const qty = _.random(1, addPotions)
+      if (request.length >= maxTypeAmt || !potionPool.length) {
+        // If the maximum # of potion types has been reached, or there are no more potion types available,
+        // add this quantity to a random potion type already in the order
         const i = _.random(1, request.length) - 1
         request[i].qty = request[i].qty + qty
       } else {
         // Else, add a new potion type to the order and
         // remove that type from the potion pool
         const i = _.random(1, potionPool.length) - 1,
-          potion = _.slice(potionPool, i, (i + 1))
+          potion = potionPool.splice(i, 1)
         request.push({ name : potion[0].name, qty })
       }
-      fillOrder = fillOrder - qty
+      addPotions = addPotions - qty
     }
 
     // Now calculate a price
