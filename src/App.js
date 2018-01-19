@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import Grid from './components/Grid'
+import Orders, { buildOrder } from './components/Orders'
 import { _colors, getColorIndex } from './data/colors'
-import { _potions, getPotionByName, getPotionsByLevel } from './data/potions'
+import { _potions } from './data/potions'
 const _ = require('lodash')
 
 class App extends Component {
@@ -9,7 +10,7 @@ class App extends Component {
     super()
     // Start with nothing
     const totals = _.map(_colors, () => {
-      return 1000
+      return 100
     })
     this.state = {
       gold: 0,
@@ -21,6 +22,7 @@ class App extends Component {
       totals
     }
     this.updateTotals = this.updateTotals.bind(this)
+    this.createOrder = this.createOrder.bind(this)
   }
   updateTotals = (color, count) => {
     let totals = this.state.totals
@@ -47,8 +49,16 @@ class App extends Component {
   previewPotion = recipe => {
     // TODO: Visualize post-brew mat values
   }
+  createOrder = () => {
+    const order = buildOrder()
+    let orders = this.state.orders
+    orders.push(order)
+    this.setState({ orders })
+  }
   fillOrder = order => {
     const gold = _.sum([this.state.gold, order.reward])
+    let orders = this.state.orders
+    _.remove(orders, order)
     let inventory = this.state.inventory
     _.each(order.request, item => {
       let potion = inventory.potions[item.name]
@@ -57,12 +67,12 @@ class App extends Component {
         delete inventory.potions[item.name]
       }
     })
-    this.setState({ gold, inventory })
+    this.setState({ gold, inventory, orders })
   }
   render() {
     return (
       <div className="App">
-        <Orders potions={this.state.inventory.potions} fillOrder={this.fillOrder} />
+        <Orders orders={this.state.orders} potions={this.state.inventory.potions} createOrder={this.createOrder} fillOrder={this.fillOrder} />
         <div className="left">
           <Inventory {...this.state} />
         </div>
@@ -72,116 +82,6 @@ class App extends Component {
         <Grid updateTotals={this.updateTotals} />
       </div>
     );
-  }
-}
-
-class Orders extends Component {
-  constructor() {
-    super()
-    this.state = {
-      orders: []
-    }
-  }
-  createOrder = () => {
-    // Roll for rarity!
-    const roll = _.random(1, 20)
-    let level, maxAmt, maxTypeAmt, request = []
-
-    // Set up the basics for each level of order: rare, uncommon, and common
-    if (roll === 20) {
-      level = 3
-      maxAmt = 1
-      maxTypeAmt = 1
-    } else if (roll > 15) {
-      level = 2
-      maxAmt = 3
-      maxTypeAmt = 2
-    } else {
-      level = 1
-      maxAmt = 5
-      maxTypeAmt = 3
-    }
-
-    const potionPool = getPotionsByLevel(level)
-    let addPotions = _.random(1, maxAmt)
-
-    while (addPotions) {
-      const qty = _.random(1, addPotions)
-      if (request.length >= maxTypeAmt || !potionPool.length) {
-        // If the maximum # of potion types has been reached, or there are no more potion types available,
-        // add this quantity to a random potion type already in the order
-        const i = _.random(1, request.length) - 1
-        request[i].qty = request[i].qty + qty
-      } else {
-        // Else, add a new potion type to the order and
-        // remove that type from the potion pool
-        const i = _.random(1, potionPool.length) - 1,
-          potion = potionPool.splice(i, 1)
-        request.push({ name : potion[0].name, qty })
-      }
-      addPotions = addPotions - qty
-    }
-
-    // Now calculate a price
-    const totalMaterials = _.reduce(request, (a, b) => {
-        return a + getPotionByName(b.name).totalMats * b.qty
-      }, 0),
-      coefficient = 1 + ((roll - 10)/10),
-      reward = Math.ceil((totalMaterials * coefficient)/5) * 5
-
-    // Done!  Update the state
-    const order = { request, level, reward }
-    let orders = this.state.orders
-    orders.push(order)
-    this.setState({ order })
-  }
-  canFill = request => {
-    const pots = this.props.potions
-    const needsPots = _.filter(request, item => {
-      if (!pots || !pots[item.name]) return true
-      else return item.qty > pots[item.name]
-    })
-    return !needsPots.length
-  }
-  onClick = order => {
-    let orders = this.state.orders
-    _.remove(orders, order)
-    this.setState({ orders })
-    this.props.fillOrder(order)
-  }
-  render() {
-    const orders = _.map(this.state.orders, (order, orderIndex) => {
-      const items = _.map(order.request, (item, i) => {
-        return (
-          <li key={'item_' + orderIndex + '_' + i}>
-            <span className='qty'>{item.qty}x</span> {item.name}
-          </li>
-        )
-      })
-
-      let props = {
-        className: 'order level_' + order.level,
-        key: 'order_' + orderIndex
-      }
-      // Check to see if the player has the potions to fill the order
-      if (this.canFill(order.request)) {
-        props.className += ' canFill'
-        props.onClick = () => { this.onClick(order) }
-      }
-      return (
-        <div {...props}>
-          <ul>{items}</ul>
-          <div className='reward'>{order.reward}g</div>
-        </div>
-      )
-    })
-    return (
-      <div id='orders'>
-        <h3>Orders</h3>
-        <button onClick={this.createOrder}>createOrder</button>
-        {orders}
-      </div>
-    )
   }
 }
 
