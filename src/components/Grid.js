@@ -12,7 +12,9 @@ class Grid extends Component {
     super()
     this.state = {
       matrix: this.buildGrid(),
-      feedback: this.buildGrid(1)
+      feedback: this.buildGrid(1),
+      multiplyer: 5,
+      maxMultiplyer: 10
     }
 
     this.fire = this.fire.bind(this)
@@ -45,7 +47,16 @@ class Grid extends Component {
     // and update the totals.  Otherwise, send feedback
     if (count >= 3) {
       this.pop(group)
-      this.props.updateTotals(sq.color, count)
+
+      // Multiplier truly multiplies on every 5
+      const m = Math.floor(this.state.multiplyer / 5)
+      this.props.updateTotals(sq.color, (count * m))
+
+      // If player popped 10 or more, set to next multiplyer
+      // or if 5 or more add one step, else reset the multiplyer
+      let multiplyer = count >= 10 ? this.state.multiplyer + 5 : count >= 5 ? this.state.multiplyer + 1 : 5
+      multiplyer = _.min([multiplyer, this.state.maxMultiplyer])
+      this.setState({ multiplyer })
     } else {
       this.feedback(group)
     }
@@ -131,7 +142,10 @@ class Grid extends Component {
       )
     })
     return (
-      <table id='grid'><tbody>{rows}</tbody></table>
+      <div id='grid'>
+        <table><tbody>{rows}</tbody></table>
+        <div className='multiplyer'>{this.state.multiplyer % 5} - {Math.floor(this.state.multiplyer/5)}x</div>
+      </div>
     )
   }
 }

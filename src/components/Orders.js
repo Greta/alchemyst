@@ -92,7 +92,6 @@ class Orders extends Component {
     return (
       <div id='orders'>
         <h3>Orders</h3>
-        <button onClick={this.props.createOrder}>createOrder</button>
         {orders}
       </div>
     )

@@ -10,24 +10,28 @@ class App extends Component {
     super()
     // Start with nothing
     const totals = _.map(_colors, () => {
-      return 100
+      return 0
     })
+    const order = buildOrder()
     this.state = {
       gold: 0,
       inventory: {
         potions: {},
         items: {}
       },
-      orders: [],
+      orders: [order],
       totals
     }
     this.updateTotals = this.updateTotals.bind(this)
-    this.createOrder = this.createOrder.bind(this)
+    this.addOrder = this.addOrder.bind(this)
   }
   updateTotals = (color, count) => {
     let totals = this.state.totals
     totals[color - 1] += count
     this.setState({ totals })
+    if (_.random(1, 10) === 10) {
+      this.addOrder()
+    }
   }
   brewPotion = potion => {
     let inventory = this.state.inventory,
@@ -49,7 +53,7 @@ class App extends Component {
   previewPotion = recipe => {
     // TODO: Visualize post-brew mat values
   }
-  createOrder = () => {
+  addOrder = () => {
     const order = buildOrder()
     let orders = this.state.orders
     orders.push(order)
@@ -65,6 +69,8 @@ class App extends Component {
       potion = potion - item.qty
       if (potion < 1) {
         delete inventory.potions[item.name]
+      } else {
+        inventory.potions[item.name] = potion
       }
     })
     this.setState({ gold, inventory, orders })
@@ -72,7 +78,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Orders orders={this.state.orders} potions={this.state.inventory.potions} createOrder={this.createOrder} fillOrder={this.fillOrder} />
+        <Orders orders={this.state.orders} potions={this.state.inventory.potions} fillOrder={this.fillOrder} />
         <div className="left">
           <Inventory {...this.state} />
         </div>
