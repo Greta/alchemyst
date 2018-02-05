@@ -10,5 +10,5 @@ npm start
 As you may see in the code, this will eventually be an electron app.
 If you're curious enough to see how it works in electron, after "npm start", run
 ```
-. electron
+npm run electron
 ```

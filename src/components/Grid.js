@@ -13,6 +13,7 @@ class Grid extends Component {
     this.state = {
       matrix: this.buildGrid(),
       feedback: this.buildGrid(1),
+      specials: {},
       multiplyer: 5,
       maxMultiplyer: 10
     }
@@ -48,15 +49,22 @@ class Grid extends Component {
     if (count >= 3) {
       this.pop(group)
 
-      // Multiplier truly multiplies on every 5
+      // Multiplier truly multiplies harvest every 5 steps
       const m = Math.floor(this.state.multiplyer / 5)
       this.props.updateTotals(sq.color, (count * m))
 
-      // If player popped 10 or more, set to next multiplyer
-      // or if 5 or more add one step, else reset the multiplyer
-      let multiplyer = count >= 10 ? this.state.multiplyer + 5 : count >= 5 ? this.state.multiplyer + 1 : 5
+      // If 5 or more add to multiplyer, otherwise reset it
+      let multiplyer = count >= 5 ? this.state.multiplyer + 1 : 5
       multiplyer = _.min([multiplyer, this.state.maxMultiplyer])
       this.setState({ multiplyer })
+
+      // If 10 or more create a tranfiguration flower (name change?)
+      if (count >= 10) {
+        let specials = this.state.specials
+        specials[sq.y] = specials[sq.y] || {}
+        specials[sq.y][sq.x] = 'transfiguration'
+        this.setState({ specials })
+      }
     } else {
       this.feedback(group)
     }
@@ -107,9 +115,9 @@ class Grid extends Component {
     group[y][x] = 1
     return group
   }
-  hasUnchecked = group => {
-    return _.flatten(group).includes(2)
-  }
+  hasUnchecked = group => (
+    _.flatten(group).includes(2)
+  )
   pop = group => {
     let matrix = this.state.matrix
     _.each(group, (row, y) => {
@@ -126,9 +134,16 @@ class Grid extends Component {
     this.setState({ feedback : group })
   }
   render() {
+    const specials = this.state.specials
     const rows = _.map(this.state.matrix, (row, y) => {
       const cols = _.map(row, (color, x) => {
         let props = {y, x, color}
+
+        // Does the square have special properties?
+        if (specials[y] && specials[y][x]) {
+          props.special = specials[y][x]
+        }
+
         return (
           <Square {...props}
             onClick={this.fire}
@@ -180,14 +195,15 @@ class Square extends Component {
     this.setState({ class: '' })
   }
   render() {
-    const color = _colors[this.state.color - 1]
-    let props = {
+    let className = _colors[this.state.color - 1]
+    let tdProps = {
       onClick: () => {this.props.onClick(this.props)}
     }
-    if (this.state.class) props.className = this.state.class
+    if (this.state.class) tdProps.className = this.state.class
+    if (this.props.special) className += ' ' + this.props.special
     return (
-      <td {...props}>
-        <div className={color}>
+      <td {...tdProps}>
+        <div className={className}>
           <span></span>
           <span></span>
           <span></span>

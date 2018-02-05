@@ -77,15 +77,19 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="App">
-        <Orders orders={this.state.orders} potions={this.state.inventory.potions} fillOrder={this.fillOrder} />
+      <div className="layout">
         <div className="left">
+          <Recipes totals={this.state.totals} onClick={this.brewPotion} />
+          <Cauldron />
+        </div>
+        <div className="middle">
+          <Grid updateTotals={this.updateTotals} />
           <Inventory {...this.state} />
         </div>
         <div className="right">
-          <Recipes totals={this.state.totals} onClick={this.brewPotion} />
+          <Orders orders={this.state.orders} potions={this.state.inventory.potions} fillOrder={this.fillOrder} />
+          <Orb />
         </div>
-        <Grid updateTotals={this.updateTotals} />
       </div>
     );
   }
@@ -150,6 +154,22 @@ class Recipes extends Component {
         <h3>Recipes</h3>
         <ul>{list}</ul>
       </div>
+    )
+  }
+}
+
+class Cauldron extends Component {
+  render() {
+    return (
+      <div id="cauldron"></div>
+    )
+  }
+}
+
+class Orb extends Component {
+  render() {
+    return (
+      <div id="orb"></div>
     )
   }
 }

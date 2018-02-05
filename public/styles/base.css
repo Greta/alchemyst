@@ -15,64 +15,74 @@ button {
   margin: auto;
   padding-top: 50px; }
 
-.right {
-  float: right; }
-
-.left {
-  float: left; }
+.layout {
+  display: flex; }
+  .layout .left, .layout .right {
+    flex: 1; }
+  .layout .middle {
+    flex: 0 0 400px;
+    min-width: 400px; }
 
 #grid {
-  width: 240px;
-  margin: auto;
   line-height: 0; }
-  #grid td {
-    position: relative;
-    height: 30px;
-    width: 30px; }
-    #grid td div {
-      position: absolute;
-      top: 1px;
-      right: 1px;
-      bottom: 1px;
-      left: 1px; }
-      #grid td div.pink span {
-        background: #E50666; }
-      #grid td div.purple span {
-        background: #A100CD; }
-      #grid td div.blue span {
-        background: #04B4B7; }
-      #grid td div.green span {
-        background: #59D37A; }
-      #grid td div.yellow span {
-        background: #F2D208; }
-    #grid td span {
-      position: absolute;
-      height: 15px;
-      width: 15px;
-      transition: background-color 0.3s ease;
-      transform: rotateZ(360deg); }
-      #grid td span:nth-child(1) {
-        top: 0;
-        left: 0; }
-      #grid td span:nth-child(2) {
-        top: 0;
-        right: 0; }
-      #grid td span:nth-child(3) {
-        bottom: 0;
-        left: 0; }
-      #grid td span:nth-child(4) {
-        bottom: 0;
-        right: 0; }
+  #grid table {
+    margin: auto; }
+    #grid table td {
+      position: relative;
+      height: 50px;
+      width: 50px; }
+      #grid table td div {
+        position: absolute;
+        top: 1px;
+        right: 1px;
+        bottom: 1px;
+        left: 1px; }
+        #grid table td div.pink span {
+          background: #E50666; }
+        #grid table td div.purple span {
+          background: #A100CD; }
+        #grid table td div.blue span {
+          background: #04B4B7; }
+        #grid table td div.green span {
+          background: #59D37A; }
+        #grid table td div.yellow span {
+          background: #F2D208; }
+        #grid table td div.transfiguration:after {
+          content: '';
+          position: absolute;
+          top: 1px;
+          right: 1px;
+          bottom: 1px;
+          left: 1px;
+          border: 2px solid #F2D208; }
+      #grid table td span {
+        position: absolute;
+        height: 50%;
+        width: 50%;
+        transition: background-color 0.3s ease;
+        transform: rotateZ(360deg); }
+        #grid table td span:nth-child(1) {
+          top: 0;
+          left: 0; }
+        #grid table td span:nth-child(2) {
+          top: 0;
+          right: 0; }
+        #grid table td span:nth-child(3) {
+          bottom: 0;
+          left: 0; }
+        #grid table td span:nth-child(4) {
+          bottom: 0;
+          right: 0; }
   #grid .multiplyer {
     text-align: center;
     line-height: 1em; }
 
-#inventory, #recipes, #orders {
+#inventory, #recipes, #orders, #cauldron, #orb {
   border-radius: 5px;
   padding: 10px 25px; }
-  #inventory h3, #recipes h3, #orders h3 {
+  #inventory h3, #recipes h3, #orders h3, #cauldron h3, #orb h3 {
     margin: 10px 0; }
-  #inventory ul, #recipes ul, #orders ul {
+  #inventory ul, #recipes ul, #orders ul, #cauldron ul, #orb ul {
     list-style: none;
     padding: 0; }
 
@@ -174,11 +184,7 @@ button {
 
 #orders {
   background: #528DEA;
-  color: #124391;
-  width: 150px;
-  position: absolute;
-  left: 20px;
-  top: 20px; }
+  color: #124391; }
   #orders button {
     background: #124391;
     color: #528DEA; }
@@ -203,6 +209,12 @@ button {
       color: white;
       cursor: pointer; }
 
+#cauldron {
+  background: #1A1A1A; }
+
+#orb {
+  background: #3A3A3A; }
+
 @keyframes feedback {
   from, to {
     transform: translate3d(0, 0, 0); }
@@ -223,10 +235,10 @@ button {
     bottom: 1px;
     left: 1px; }
   65% {
-    top: -3px;
-    right: -3px;
-    bottom: -3px;
-    left: -3px; } }
+    top: -5%;
+    right: -5%;
+    bottom: -5%;
+    left: -5%; } }
 
 @keyframes popSpan {
   0%, 30% {
