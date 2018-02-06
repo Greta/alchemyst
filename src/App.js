@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Grid from './components/Grid'
 import Orders, { buildOrder } from './components/Orders'
 import { _colors, getColorIndex } from './data/colors'
-import { _potions } from './data/potions'
+import { _potions, getPotionByName } from './data/potions'
 const _ = require('lodash')
 
 class App extends Component {
@@ -103,21 +103,25 @@ class Inventory extends Component {
       )
     })
     const potions = _.map(this.props.inventory.potions, (amt, name) => {
+      const potion = getPotionByName(name),
+        style = { backgroundColor: potion.color }
       return (
-        <li key={name}>
-          <div className="name">{name}</div>
-          <div className="amt">{amt}</div>
+        <li key={name} className={'potion ' + potion.flask}>
+          <span className='color' style={style}></span>
+          <span className='amt'>{amt}</span>{amt}
         </li>
       )
     })
     return (
       <div id="inventory">
-        <h3>Gold</h3>
-        <div className="gold">{this.props.gold}g</div>
-        <h3>Raw Materials</h3>
-        <ul className="totals">{totals}</ul>
-        <h3>Potions</h3>
-        <ul className="potions">{potions}</ul>
+        <h3>Inventory</h3>
+        <span className="gold">
+          {this.props.gold}g
+        </span>
+        <ul>
+          {totals}
+          {potions}
+        </ul>
       </div>
     )
   }
@@ -161,7 +165,9 @@ class Recipes extends Component {
 class Cauldron extends Component {
   render() {
     return (
-      <div id="cauldron"></div>
+      <div id="cauldron">
+        <h3>Cauldron will go here</h3>
+      </div>
     )
   }
 }
@@ -169,7 +175,9 @@ class Cauldron extends Component {
 class Orb extends Component {
   render() {
     return (
-      <div id="orb"></div>
+      <div id="orb">
+        <h3>Morphorb will go here</h3>
+      </div>
     )
   }
 }
