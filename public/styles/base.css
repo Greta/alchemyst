@@ -12,6 +12,8 @@ button {
   padding: 0.25em 0.5em;
   cursor: pointer;
   transition: all ease 0.2s; }
+  button:focus {
+    outline: none; }
 
 .layout {
   height: 100%;
@@ -82,6 +84,45 @@ button {
   #grid .multiplyer {
     text-align: center;
     line-height: 1em; }
+
+#menu .panel {
+  background: white;
+  color: black;
+  border-radius: 5px;
+  padding: 10px 25px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 10%;
+  z-index: 101;
+  width: 200px;
+  margin: auto;
+  text-align: center; }
+  #menu .panel h3 {
+    margin: 10px 0; }
+  #menu .panel ul {
+    list-style: none;
+    padding: 0; }
+
+#menu .overlay {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.3); }
+
+#menu button {
+  color: #647b1b;
+  background: #bada55;
+  padding: 5px;
+  margin: 5px;
+  width: 50%;
+  font-size: 1em; }
+  #menu button:hover {
+    background: #a8cf2d; }
 
 #inventory {
   background: #DC9654;
@@ -249,11 +290,6 @@ button {
   #orders ul {
     list-style: none;
     padding: 0; }
-  #orders button {
-    background: #124391;
-    color: #528DEA; }
-    #orders button:hover {
-      background: #1758bf; }
   #orders .order {
     margin-top: 5px;
     font-size: 14px;

@@ -15,7 +15,6 @@ class App extends Component {
     })
     const order = buildOrder()
     this.state = {
-      menu: 'closed',
       gold: 0,
       inventory: {
         potions: {},
@@ -77,22 +76,10 @@ class App extends Component {
     })
     this.setState({ gold, inventory, orders })
   }
-  openMenu = e => {
-    if (e.keyCode === 27) {
-      const menu = this.state.menu === 'closed' ? 'open' : 'closed'
-      this.setState({ menu })
-    }
-  }
-  componentDidMount() {
-    document.addEventListener('keydown', this.openMenu, true)
-  }
-  componentWillUnmount() {
-    document.removeEventListener('keydown', this.openMenu, true)
-  }
   render() {
     return (
       <div className="layout" onKeyDown={this.openMenu}>
-        <Menu panel={this.state.menu} />
+        <Menu />
         <div className="left">
           <Recipes totals={this.state.totals} onClick={this.brewPotion} />
           <Cauldron />

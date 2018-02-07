@@ -37,6 +37,9 @@ button {
   padding: 0.25em 0.5em;
   cursor: pointer;
   transition: all ease 0.2s;
+  &:focus {
+    outline: none;
+  }
 }
 
 .layout {
@@ -118,6 +121,38 @@ button {
   .multiplyer {
     text-align: center;
     line-height: 1em;
+  }
+}
+
+#menu {
+  .panel {
+    @include ui-ele(white, black);
+    position: fixed;
+    left: 0; right:0;
+    top: 10%;
+    z-index: 101;
+    width: 200px;
+    margin: auto;
+    text-align: center;
+  }
+  .overlay {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.3);
+  }
+  button {
+    $bgColor: #bada55;
+    color: darken($bgColor, 30%);
+    background: $bgColor;
+    padding: 5px;
+    margin: 5px;
+    width: 50%;
+    font-size: 1em;
+    &:hover {
+      background: darken($bgColor, 10%);
+    }
   }
 }
 
@@ -266,13 +301,6 @@ button {
   @include ui-ele($bgColor, $color);
 
   margin: 10px;
-  button {
-    background: darken($bgColor, 30%);
-    color: $bgColor;
-    &:hover {
-      background: darken($bgColor, 20%);
-    }
-  }
 
   .order {
     margin-top: 5px;
