@@ -1,0 +1,393 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif; }
+
+html, body, #root {
+  height: 100%; }
+
+button {
+  border: 0;
+  border-radius: 3px;
+  padding: 0.25em 0.5em;
+  cursor: pointer;
+  transition: all ease 0.2s; }
+  button:focus {
+    outline: none; }
+
+.layout {
+  height: 100%;
+  display: flex; }
+  .layout .left, .layout .middle, .layout .right {
+    height: 100%;
+    position: relative; }
+  .layout .left, .layout .right {
+    flex: 1; }
+  .layout .middle {
+    flex: 0 0 400px;
+    min-width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; }
+
+#grid {
+  line-height: 0;
+  margin: 10px 0; }
+  #grid table {
+    margin: auto; }
+    #grid table td {
+      position: relative;
+      height: 40px;
+      width: 40px; }
+      #grid table td div {
+        position: absolute;
+        top: 1px;
+        right: 1px;
+        bottom: 1px;
+        left: 1px; }
+        #grid table td div.pink span {
+          background: #E50666; }
+        #grid table td div.purple span {
+          background: #A100CD; }
+        #grid table td div.blue span {
+          background: #04B4B7; }
+        #grid table td div.green span {
+          background: #59D37A; }
+        #grid table td div.yellow span {
+          background: #F2D208; }
+        #grid table td div.transfiguration:after {
+          content: '';
+          position: absolute;
+          top: 1px;
+          right: 1px;
+          bottom: 1px;
+          left: 1px;
+          border: 2px solid #F2D208; }
+      #grid table td span {
+        position: absolute;
+        height: 50%;
+        width: 50%;
+        transition: background-color 0.3s ease;
+        transform: rotateZ(360deg); }
+        #grid table td span:nth-child(1) {
+          top: 0;
+          left: 0; }
+        #grid table td span:nth-child(2) {
+          top: 0;
+          right: 0; }
+        #grid table td span:nth-child(3) {
+          bottom: 0;
+          left: 0; }
+        #grid table td span:nth-child(4) {
+          bottom: 0;
+          right: 0; }
+  #grid .multiplyer {
+    text-align: center;
+    line-height: 1em; }
+
+#menu .panel {
+  background: white;
+  color: black;
+  border-radius: 5px;
+  padding: 10px 25px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 10%;
+  z-index: 101;
+  width: 200px;
+  margin: auto;
+  text-align: center; }
+  #menu .panel h3 {
+    margin: 10px 0; }
+  #menu .panel ul {
+    list-style: none;
+    padding: 0; }
+
+#menu .overlay {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.3); }
+
+#menu button {
+  color: #647b1b;
+  background: #bada55;
+  padding: 5px;
+  margin: 5px;
+  width: 50%;
+  font-size: 1em; }
+  #menu button:hover {
+    background: #a8cf2d; }
+
+#inventory {
+  background: #DC9654;
+  color: #a86322;
+  border-radius: 5px;
+  padding: 10px 25px;
+  position: relative;
+  margin-bottom: 10px;
+  flex-grow: 1; }
+  #inventory h3 {
+    margin: 10px 0; }
+  #inventory ul {
+    list-style: none;
+    padding: 0; }
+  #inventory h3 {
+    display: inline-block; }
+  #inventory ul {
+    margin-top: 0; }
+    #inventory ul li {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      margin: 5px;
+      display: inline-block;
+      text-align: center; }
+      #inventory ul li.pink {
+        background: #E50666;
+        color: #82033a; }
+      #inventory ul li.purple {
+        background: #A100CD;
+        color: #510067; }
+      #inventory ul li.blue {
+        background: #04B4B7;
+        color: #025253; }
+      #inventory ul li.green {
+        background: #59D37A;
+        color: #299d49; }
+      #inventory ul li.yellow {
+        background: #F2D208;
+        color: #8f7c05; }
+      #inventory ul li.potion {
+        position: relative; }
+        #inventory ul li.potion:before {
+          content: '';
+          background: no-repeat center;
+          background-size: contain;
+          position: absolute;
+          left: 0;
+          height: 100%;
+          width: 100%;
+          z-index: 2; }
+        #inventory ul li.potion .color {
+          display: block;
+          border-radius: 50%;
+          position: absolute;
+          z-index: 1; }
+        #inventory ul li.potion .amt {
+          position: absolute;
+          z-index: 3;
+          bottom: 5px;
+          right: 5px;
+          color: white;
+          line-height: 0;
+          text-shadow: 0 0 5px rgba(0, 0, 0, 0.8); }
+        #inventory ul li.potion.tube:before {
+          background-image: url(../img/flask-tube.png); }
+        #inventory ul li.potion.tube .color {
+          transform: rotate(135deg);
+          border-radius: 0;
+          height: 15px;
+          width: 20px;
+          top: 20px;
+          left: 3px; }
+        #inventory ul li.potion.round:before {
+          background-image: url(../img/flask-round.png); }
+        #inventory ul li.potion.round .color {
+          height: 30px;
+          width: 30px;
+          top: 8px;
+          left: 3px; }
+        #inventory ul li.potion:hover {
+          animation: clink .5s; }
+  #inventory .gold {
+    color: #EFC338;
+    margin-left: 15px; }
+
+#recipes {
+  background: #E8E8E8;
+  color: #9c9c9c;
+  border-radius: 5px;
+  padding: 10px 25px;
+  margin: 10px; }
+  #recipes h3 {
+    margin: 10px 0; }
+  #recipes ul {
+    list-style: none;
+    padding: 0; }
+  #recipes ul li {
+    padding: 5px 0; }
+    #recipes ul li div {
+      display: inline-block; }
+      #recipes ul li div.name {
+        width: 90px; }
+      #recipes ul li div.mats * + * {
+        margin-left: 5px; }
+      #recipes ul li div.mats span {
+        display: inline-block; }
+    #recipes ul li .pink {
+      transition: all 0.2s ease;
+      color: #E50666; }
+    #recipes ul li.canMake .pink {
+      color: white;
+      text-shadow: 0px 0px 2px #b30550; }
+    #recipes ul li.canMake:hover .pink {
+      text-shadow: 0px 0px 2px #9a0445, 0px 0px 2px #9a0445; }
+    #recipes ul li .purple {
+      transition: all 0.2s ease;
+      color: #A100CD; }
+    #recipes ul li.canMake .purple {
+      color: white;
+      text-shadow: 0px 0px 2px #79009a; }
+    #recipes ul li.canMake:hover .purple {
+      text-shadow: 0px 0px 2px #650081, 0px 0px 2px #650081; }
+    #recipes ul li .blue {
+      transition: all 0.2s ease;
+      color: #04B4B7; }
+    #recipes ul li.canMake .blue {
+      color: white;
+      text-shadow: 0px 0px 2px #038385; }
+    #recipes ul li.canMake:hover .blue {
+      text-shadow: 0px 0px 2px #026a6c, 0px 0px 2px #026a6c; }
+    #recipes ul li .green {
+      transition: all 0.2s ease;
+      color: #59D37A; }
+    #recipes ul li.canMake .green {
+      color: white;
+      text-shadow: 0px 0px 2px #34c55b; }
+    #recipes ul li.canMake:hover .green {
+      text-shadow: 0px 0px 2px #2fb152, 0px 0px 2px #2fb152; }
+    #recipes ul li .yellow {
+      transition: all 0.2s ease;
+      color: #F2D208; }
+    #recipes ul li.canMake .yellow {
+      color: white;
+      text-shadow: 0px 0px 2px #c1a706; }
+    #recipes ul li.canMake:hover .yellow {
+      text-shadow: 0px 0px 2px #a89206, 0px 0px 2px #a89206; }
+    #recipes ul li.canMake {
+      cursor: pointer; }
+      #recipes ul li.canMake .name {
+        transition: all 0.2s ease;
+        color: white;
+        text-shadow: 0px 0px 2px black; }
+      #recipes ul li.canMake:hover .name {
+        text-shadow: 0px 0px 2px black, 0px 0px 2px black; }
+
+#orders {
+  background: #528DEA;
+  color: #124391;
+  border-radius: 5px;
+  padding: 10px 25px;
+  margin: 10px; }
+  #orders h3 {
+    margin: 10px 0; }
+  #orders ul {
+    list-style: none;
+    padding: 0; }
+  #orders .order {
+    margin-top: 5px;
+    font-size: 14px;
+    position: relative;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #7fabf0; }
+    #orders .order ul {
+      margin: 0; }
+    #orders .order .reward {
+      color: #EFC338;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%); }
+    #orders .order.canFill {
+      color: white;
+      cursor: pointer; }
+
+#cauldron, #orb {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  height: 20%; }
+
+#cauldron {
+  background: #1A1A1A;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 25px; }
+  #cauldron h3 {
+    margin: 10px 0; }
+  #cauldron ul {
+    list-style: none;
+    padding: 0; }
+
+#orb {
+  background: #3A3A3A;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 25px; }
+  #orb h3 {
+    margin: 10px 0; }
+  #orb ul {
+    list-style: none;
+    padding: 0; }
+
+@keyframes feedback {
+  from, to {
+    transform: translate3d(0, 0, 0); }
+  10%, 50%, 90% {
+    transform: translate3d(-2px, 0, 0); }
+  30%, 70% {
+    transform: translate3d(2px, 0, 0); } }
+
+.feedback {
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+  animation-name: feedback; }
+
+@keyframes pop {
+  0%, 10%, 100% {
+    top: 1px;
+    right: 1px;
+    bottom: 1px;
+    left: 1px; }
+  65% {
+    top: 15%;
+    right: 15%;
+    bottom: 15%;
+    left: 15%; } }
+
+@keyframes popSpan {
+  0%, 30% {
+    transform: rotate(0); }
+  100% {
+    transform: rotate(90deg); } }
+
+@keyframes popSpanInverse {
+  0%, 20% {
+    transform: rotate(0); }
+  100% {
+    transform: rotate(-90deg); } }
+
+.pop div {
+  animation: pop 0.3s 1 ease-in-out both; }
+  .pop div span {
+    animation: popSpan 0.3s 1 ease-in-out both; }
+
+@keyframes clink {
+  0% {
+    transform: rotate(0deg); }
+  25% {
+    transform: rotate(15deg); }
+  50% {
+    transform: rotate(-15deg); }
+  75% {
+    transform: rotate(5deg); }
+  100% {
+    transform: rotate(0deg); } }
