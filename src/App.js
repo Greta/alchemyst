@@ -16,6 +16,9 @@ class App extends Component {
     const order = buildOrder()
     this.state = {
       gold: 0,
+      day: 1,
+      time: 0,
+      timeInDay: 10,
       inventory: {
         potions: {},
         items: {}
@@ -24,15 +27,33 @@ class App extends Component {
       totals
     }
     this.updateTotals = this.updateTotals.bind(this)
+    this.incrementTime = this.incrementTime.bind(this)
     this.addOrder = this.addOrder.bind(this)
   }
   updateTotals = (color, count) => {
-    let totals = this.state.totals
-    totals[color - 1] += count
-    this.setState({ totals })
+    if (color === 'golden') {
+      // Update golden herb count here
+    } else {
+      let totals = this.state.totals
+      totals[color - 1] += count
+      this.setState({ totals })
+    }
+    // 10% chance to create an order
     if (_.random(1, 10) === 10) {
       this.addOrder()
     }
+  }
+  incrementTime = (amt = 1) => {
+    let time = this.state.time + 1,
+      day = this.state.day,
+      newDay = false
+    if (time > this.state.timeInDay) {
+      time = 0
+      day++
+      newDay = true
+    }
+    this.setState({ time, day })
+    return newDay
   }
   brewPotion = potion => {
     let inventory = this.state.inventory,
@@ -85,7 +106,8 @@ class App extends Component {
           <Cauldron />
         </div>
         <div className="middle">
-          <Grid updateTotals={this.updateTotals} />
+          <Time {...this.state} />
+          <Grid updateTotals={this.updateTotals} incrementTime={this.incrementTime} />
           <Inventory {...this.state} />
         </div>
         <div className="right">
@@ -164,11 +186,25 @@ class Recipes extends Component {
   }
 }
 
+class Time extends Component {
+  render() {
+    const width = (this.props.time / this.props.timeInDay) * 100
+    const pStyle = {
+      width: width + '%'
+    }
+    return (
+      <div id="time">
+        Day {this.props.day}
+        <div className="progress"><div style={pStyle}></div></div>
+      </div>
+    )
+  }
+}
+
 class Cauldron extends Component {
   render() {
     return (
       <div id="cauldron">
-        <h3>Cauldron will go here</h3>
       </div>
     )
   }
@@ -178,7 +214,6 @@ class Orb extends Component {
   render() {
     return (
       <div id="orb">
-        <h3>Morphorb will go here</h3>
       </div>
     )
   }

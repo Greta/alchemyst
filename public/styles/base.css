@@ -55,7 +55,7 @@ button {
           background: #59D37A; }
         #grid table td div.yellow span {
           background: #F2D208; }
-        #grid table td div.transfiguration:after {
+        #grid table td div.golden:after {
           content: '';
           position: absolute;
           top: 1px;
@@ -308,6 +308,20 @@ button {
     #orders .order.canFill {
       color: white;
       cursor: pointer; }
+
+#time {
+  margin-top: 20px; }
+  #time .progress {
+    height: 8px;
+    position: relative;
+    background: #545454;
+    border: 2px solid #545454; }
+    #time .progress div {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      background: #44A5F1; }
 
 #cauldron, #orb {
   position: absolute;

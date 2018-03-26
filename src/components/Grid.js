@@ -13,7 +13,7 @@ class Grid extends Component {
     this.state = {
       matrix: this.buildGrid(),
       feedback: this.buildGrid(1),
-      specials: {},
+      specials: this.buildGrid(1),
       multiplyer: 5,
       maxMultiplyer: 10
     }
@@ -58,12 +58,25 @@ class Grid extends Component {
       multiplyer = _.min([multiplyer, this.state.maxMultiplyer])
       this.setState({ multiplyer })
 
-      // If 10 or more create a tranfiguration flower (name change?)
+      // If 10 or more create a golden flower
       if (count >= 10) {
         let specials = this.state.specials
-        specials[sq.y] = specials[sq.y] || {}
-        specials[sq.y][sq.x] = 'transfiguration'
+        specials[sq.y][sq.x] = 'golden'
         this.setState({ specials })
+      }
+
+      // Increment time
+      const newDay = this.props.incrementTime()
+      if (newDay) {
+        // At the end of the day, we harvest the golden flowers, too
+        const count = _.remove(_.flatten(this.state.specials), 0).length
+        this.props.updateTotals('golden', count)
+
+        // and build a new garden
+        this.setState({
+          matrix: this.buildGrid(),
+          specials: this.buildGrid(1)
+        })
       }
     } else {
       this.feedback(group)

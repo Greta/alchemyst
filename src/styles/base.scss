@@ -81,7 +81,7 @@ button {
             background: $hex;
           }
         }
-        &.transfiguration {
+        &.golden {
           &:after {
             content: '';
             position: absolute;
@@ -322,6 +322,23 @@ button {
     &.canFill {
       color: white;
       cursor: pointer;
+    }
+  }
+}
+
+#time {
+  $timeBg: #545454;
+  $timeBar: #44A5F1;
+  margin-top: 20px;
+  .progress {
+    height: 8px;
+    position: relative;
+    background: $timeBg;
+    border: 2px solid $timeBg;
+    div {
+      position: absolute;
+      top: 0; bottom: 0; left: 0;
+      background: $timeBar;
     }
   }
 }
