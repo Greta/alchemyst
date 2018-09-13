@@ -1,14 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
-# Try it out
-Simply clone the repo and punch in
-```
-npm start
-```
+# Alchemyst
+This is a work in progress, but eventually will be a game about harvesting herbs and mixing potions.
 
-## Electron
-As you may see in the code, this will eventually be an electron app.
-If you're curious enough to see how it works in electron, after "npm start", run
-```
-npm run electron
-```
+You can try it out here!
+https://greta.github.io/alchemyst/
